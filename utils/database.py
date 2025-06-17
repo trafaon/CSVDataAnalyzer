@@ -12,7 +12,17 @@ class DatabaseManager:
         if not self.database_url:
             raise ValueError("DATABASE_URL environment variable not found")
         
-        self.engine = create_engine(self.database_url)
+        # Add connection pool settings for better reliability
+        self.engine = create_engine(
+            self.database_url,
+            pool_size=5,
+            pool_recycle=3600,
+            pool_pre_ping=True,
+            connect_args={
+                "connect_timeout": 10,
+                "sslmode": "require"
+            }
+        )
         
     def create_tables(self):
         """Create tables for invoice data if they don't exist"""
@@ -75,7 +85,20 @@ class DatabaseManager:
                 
         except SQLAlchemyError as e:
             logging.error(f"Error creating tables: {e}")
-            raise
+            # Try to reconnect with fallback configuration
+            try:
+                self.engine = create_engine(
+                    self.database_url,
+                    pool_size=1,
+                    pool_recycle=300,
+                    pool_pre_ping=True
+                )
+                with self.engine.connect() as conn:
+                    conn.execute(text("SELECT 1"))
+                logging.info("Reconnected to database successfully")
+            except Exception as reconnect_error:
+                logging.error(f"Reconnection failed: {reconnect_error}")
+                raise
     
     def save_csv_data(self, csv_data):
         """
