@@ -39,14 +39,23 @@ def main():
     if 'db_manager' not in st.session_state:
         st.session_state.db_manager = None
     
-    # Initialize database
-    try:
-        if st.session_state.db_manager is None:
-            st.session_state.db_manager = DatabaseManager()
-            st.session_state.db_manager.create_tables()
-    except Exception as e:
-        st.error(f"Database initialization error: {str(e)}")
-        st.session_state.db_manager = None
+    # Initialize database with retry logic
+    if st.session_state.db_manager is None:
+        with st.spinner("Conectando ao banco de dados..."):
+            max_retries = 3
+            for attempt in range(max_retries):
+                try:
+                    st.session_state.db_manager = DatabaseManager()
+                    st.session_state.db_manager.create_tables()
+                    break
+                except Exception as e:
+                    if attempt < max_retries - 1:
+                        st.warning(f"Tentativa {attempt + 1} falhou, tentando novamente...")
+                        import time
+                        time.sleep(2)
+                    else:
+                        st.error("Erro na conexão com o banco. Sistema funcionará em modo offline.")
+                        st.session_state.db_manager = None
 
     # Check if we have data in database
     has_database_data = False
