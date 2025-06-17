@@ -1,6 +1,11 @@
-# 📊 Agente de Análise de Notas Fiscais com IA
+# 📊 CSV Data Analyzer com IA
 
 Sistema inteligente para análise de notas fiscais em formato CSV com assistente IA integrado.
+
+## 🔗 Links do Projeto
+
+- **Repositório GitHub**: https://github.com/trafaon/CSVDataAnalyzer
+- **Demo Online**: https://agentcsv-skynet2.streamlit.app
 
 ## 🚀 Funcionalidades
 
@@ -22,9 +27,10 @@ Sistema inteligente para análise de notas fiscais em formato CSV com assistente
 
 - **Frontend**: Streamlit
 - **Backend**: Python 3.11
-- **Banco de Dados**: PostgreSQL
-- **IA**: OpenAI GPT-4o
+- **Banco de Dados**: PostgreSQL/Supabase
+- **IA Framework**: LangChain com OpenAI GPT-4o
 - **Processamento**: Pandas, SQLAlchemy
+- **Arquitetura**: Sistema de agentes com memória conversacional
 
 ## ⚙️ Configuração
 
@@ -38,8 +44,8 @@ Sistema inteligente para análise de notas fiscais em formato CSV com assistente
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/trafaon/agente-nota-fiscal.git
-cd agente-nota-fiscal
+git clone https://github.com/trafaon/CSVDataAnalyzer.git
+cd CSVDataAnalyzer
 ```
 
 2. Instale as dependências:

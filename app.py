@@ -7,7 +7,7 @@ from datetime import datetime
 import locale
 from utils.zip_handler import ZipHandler
 from utils.csv_processor import CSVProcessor
-from utils.ai_agent import AIAgent
+from utils.langchain_agent import LangChainAIAgent
 from utils.database import DatabaseManager
 
 # Configure locale for Brazilian number formatting
@@ -175,7 +175,7 @@ def main():
             st.markdown("Faça perguntas sobre seus dados de notas fiscais em português")
             
             # Initialize AI agent
-            ai_agent = AIAgent()
+            ai_agent = LangChainAIAgent()
             
             # Chat interface
             for message in st.session_state.chat_history:
